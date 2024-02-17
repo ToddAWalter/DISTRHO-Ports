@@ -31,10 +31,15 @@
     #define NEON_ARM32 1
   #endif
 #else
-  static_assert(false, "No SIMD Intrinsics found which are necessary for compilation");
+  #warning "No native SIMD support; using SIMDe"
+  #define SIMDE_ENABLE_NATIVE_ALIASES
+  #include <simde/arm/neon.h>
+  #define VITAL_NEON 1
+  #define VITAL_SIMDE 1
 #endif
 
-#if VITAL_SSE2
+#if VITAL_SIMDE
+#elif VITAL_SSE2
   #include <immintrin.h>
 #elif VITAL_NEON
   #include <arm_neon.h>
