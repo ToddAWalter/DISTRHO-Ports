@@ -1,3 +1,19 @@
+**PowerAudio fork of DISTRHO Ports**
+
+This fork of DISTRHO Ports has the following changes:
+
+* Plugins are built with [a fork of JUCE] that includes fixes for IBM Power.
+* Added support for Power to build scripts.
+* Modified Vitalium to use [SIMDe] on architectures without native SIMD
+  support, enabling builds on Power. SIMDe v0.8+ must be installed.
+
+All plugins except pitchedDelay build successfully on Power.
+
+[a fork of JUCE]: https://github.com/poweraudio/distrho-juce
+[SIMDe]: https://github.com/simd-everywhere/simde
+
+---
+
 # DISTRHO Ports
 
 [![Build Status](https://travis-ci.org/DISTRHO/DISTRHO-Ports.png)](https://travis-ci.org/DISTRHO/DISTRHO-Ports)
