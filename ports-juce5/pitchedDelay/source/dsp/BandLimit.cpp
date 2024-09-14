@@ -1,8 +1,12 @@
 #include "BandLimit.h"
-#if defined(__x86_64__) || defined(__i386__)
+#if PITCHEDDELAY_SIMDE
+#warning "No native SIMD support; using SIMDe"
+#define SIMDE_ENABLE_NATIVE_ALIASES
+#include <simde/x86/sse2.h>
+#elif PITCHEDDELAY_X86
 #include <emmintrin.h>
 #include <mmintrin.h>
-#else
+#elif PITCHEDDELAY_ARM
 #include <arm_neon.h>
 typedef float32x4_t __m128;
 #define _mm_load_ps  vld1q_f32
@@ -20,7 +24,7 @@ CAllPassFilterPair::CAllPassFilterPair(double coeff_A, double coeff_B)
 
 
 
-#if defined(__x86_64__) || defined(__i386__)
+#if PITCHEDDELAY_X86
 void CAllPassFilterPair::processBlock(double* data, int numSamples)
 {
 	jassert((((size_t) data) & 0xF) == 0);
@@ -106,7 +110,7 @@ CAllPassFilterCascadePair::CAllPassFilterCascadePair(const double* coefficients_
 
 };
 
-#if defined(__x86_64__) || defined(__i386__)
+#if PITCHEDDELAY_X86
 void CAllPassFilterCascadePair::processBlock(double* data, int numSamples)
 {
 	for (int i=0; i<numfilters; ++i)
@@ -384,7 +388,7 @@ void CHalfBandFilter::setBlockSize(int newBlockSize)
 	if (newBlockSize > blockSize)
 	{
 		blockSize = newBlockSize;
-#if defined(__x86_64__) || defined(__i386__)
+#if PITCHEDDELAY_X86
 		bufferDouble.setSize(blockSize);
 #endif
 		bufferFloat.setSize(blockSize);
@@ -395,7 +399,7 @@ void CHalfBandFilter::processBlock(float* data, int numSamples)
 {
 	setBlockSize(numSamples);
 
-#if defined(__x86_64__) || defined(__i386__)
+#if PITCHEDDELAY_X86
 	double* proc = bufferDouble.getPtr(0);
 
 	{

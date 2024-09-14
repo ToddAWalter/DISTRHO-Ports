@@ -4,13 +4,14 @@ This fork of DISTRHO Ports has the following changes:
 
 * Plugins are built with [a fork of JUCE] that includes fixes for IBM Power.
 * Modified Vitalium to use [SIMDe] on architectures without native SIMD
-  support, enabling builds on Power. SIMDe v0.8+ must be installed.
+  support, enabling builds on Power. SIMDe v0.8+ must be installed on your
+  system.
+* Modified pitchedDelay to use [SIMDe] \(if installed) to support architectures
+  other than x86 and ARM.
 
 The following changes have since been merged upstream:
 
 * Added support for Power to build scripts.
-
-All plugins except pitchedDelay build successfully on Power.
 
 [a fork of JUCE]: https://github.com/poweraudio/distrho-juce
 [SIMDe]: https://github.com/simd-everywhere/simde

@@ -1,4 +1,12 @@
 #include "JuceHeader.h"
+#if defined(__x86_64__) || defined(__i386__)
+#define PITCHEDDELAY_X86 1
+#elif defined(__aarch64__) || defined(__arm__)
+#define PITCHEDDELAY_ARM 1
+#else
+#define PITCHEDDELAY_X86 1
+#define PITCHEDDELAY_SIMDE 1
+#endif
 
 class CAllPassFilterPair
 {
@@ -92,7 +100,7 @@ public:
 
 	CAllPassFilterPair(double coeff_A, double coeff_B);
 
-#if defined(__x86_64__) || defined(__i386__)
+#if PITCHEDDELAY_X86
 	void processBlock(double* data, int numSamples);
 #endif
 	void processBlock(float* data, int numSamples);
@@ -113,7 +121,7 @@ class CAllPassFilterCascadePair
 public:
 	CAllPassFilterCascadePair(const double* coefficients_A, const double* coefficients_B, int N);
 
-#if defined(__x86_64__) || defined(__i386__)
+#if PITCHEDDELAY_X86
 	void processBlock(double* data, int numSamples);
 #endif
 	void processBlock(float* data, int numSamples);
@@ -145,7 +153,7 @@ private:
 	float oldOutR;
 
 	int blockSize;
-#if defined(__x86_64__) || defined(__i386__)
+#if PITCHEDDELAY_X86
 	CAllPassFilterPair::AlignedDouble bufferDouble;
 #endif
 	CAllPassFilterPair::AlignedFloat bufferFloat;
